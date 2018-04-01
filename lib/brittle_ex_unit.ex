@@ -1,2 +1,2 @@
-defmodule BrittleExUnit do
+defmodule Brittle.ExUnit do
 end

@@ -1,4 +1,4 @@
-# BrittleExUnit
+# Brittle.ExUnit
 
 **TODO: Add description**
 

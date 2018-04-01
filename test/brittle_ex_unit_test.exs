@@ -1,3 +1,3 @@
-defmodule BrittleExUnitTest do
+defmodule Brittle.ExUnitTest do
   use ExUnit.Case
 end

@@ -10,7 +10,7 @@ defmodule Brittle.ExUnit do
     }
   end
 
-  def handle_cast({:test_finished, _}, state) do
+  def handle_cast({:test_finished, %ExUnit.Test{state: nil}}, state) do
     {:noreply, %{state | test_count: state.test_count + 1}}
   end
 

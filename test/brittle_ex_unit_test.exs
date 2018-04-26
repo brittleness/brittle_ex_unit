@@ -4,12 +4,13 @@ defmodule Brittle.ExUnitTest do
   setup do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
 
-    [pid: pid, state: %{test_count: 2, failure_count: 1}]
+    [pid: pid, state: %{test_count: 2, failure_count: 1, duration: 69251}]
   end
 
-  test "counts tests and failures", %{pid: pid, state: state} do
+  test "counts tests and failures, records durations", %{pid: pid, state: state} do
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:failed, []}}})
+    GenServer.cast(pid, {:suite_finished, 69251, 0})
 
     assert :sys.get_state(pid) == state
   end

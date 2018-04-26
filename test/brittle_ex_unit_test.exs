@@ -1,12 +1,23 @@
 defmodule Brittle.ExUnitTest do
   use ExUnit.Case
 
-  test "counts tests and failures" do
+  setup do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
 
+    [pid: pid, state: %{test_count: 2, failure_count: 1}]
+  end
+
+  test "counts tests and failures", %{pid: pid, state: state} do
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:failed, []}}})
 
-    assert :sys.get_state(pid) == %{test_count: 2, failure_count: 1}
+    assert :sys.get_state(pid) == state
+  end
+
+  test "handles unmatching clauses", %{pid: pid, state: state} do
+    :sys.replace_state(pid, fn _ -> state end)
+    GenServer.cast(pid, :no_clause_matching)
+
+    assert :sys.get_state(pid) == state
   end
 end

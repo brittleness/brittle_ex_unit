@@ -5,4 +5,9 @@ defmodule Brittle.SystemData do
     {hostname, 0} = @system.cmd("hostname", [])
     String.trim(hostname)
   end
+
+  def branch do
+    {branch, 0} = @system.cmd("git", ~w(rev-parse --abbrev-ref HEAD))
+    String.trim(branch)
+  end
 end

@@ -15,6 +15,7 @@ defmodule Brittle.ExUnitTest do
 
     state = :sys.get_state(pid)
     assert state.hostname == "Alices-MBP.fritz.box"
+    assert state.branch == "develop"
     assert state.test_count == 3
     assert state.failure_count == 1
     assert state.excluded_count == 1

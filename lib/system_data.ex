@@ -15,4 +15,9 @@ defmodule Brittle.SystemData do
     {revision, 0} = @system.cmd("git", ~w(rev-parse HEAD))
     String.trim(revision)
   end
+
+  def dirty? do
+    {status, 0} = @system.cmd("git", ~w(status --porcelain))
+    status != ""
+  end
 end

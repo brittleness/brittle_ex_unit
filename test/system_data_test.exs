@@ -1,5 +1,5 @@
 defmodule Brittle.SystemDataTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   alias Brittle.SystemData
 
   setup do

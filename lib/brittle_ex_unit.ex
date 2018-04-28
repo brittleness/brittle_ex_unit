@@ -1,6 +1,15 @@
 defmodule Brittle.ExUnit do
+  alias Brittle.SystemData
+
   def init(_) do
-    {:ok, %{test_count: 0, failure_count: 0, excluded_count: 0, duration: 0}}
+    {:ok,
+     %{
+       test_count: 0,
+       failure_count: 0,
+       excluded_count: 0,
+       duration: 0,
+       hostname: SystemData.hostname()
+     }}
   end
 
   def handle_cast({:test_finished, %ExUnit.Test{state: {:failed, _}}}, state) do

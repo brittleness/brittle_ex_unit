@@ -14,6 +14,7 @@ defmodule Brittle.ExUnitTest do
     GenServer.cast(pid, {:suite_finished, 69251, 0})
 
     state = :sys.get_state(pid)
+    assert state.hostname == "Alices-MBP.fritz.box"
     assert state.test_count == 3
     assert state.failure_count == 1
     assert state.excluded_count == 1

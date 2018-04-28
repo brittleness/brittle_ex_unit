@@ -17,6 +17,7 @@ defmodule Brittle.ExUnitTest do
     assert state.hostname == "Alices-MBP.fritz.box"
     assert state.branch == "develop"
     assert state.revision == "7f8136915fe249efa47a21a89ff0f04e880264fc"
+    assert state.dirty == true
     assert state.test_count == 3
     assert state.failure_count == 1
     assert state.excluded_count == 1

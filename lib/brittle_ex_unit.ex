@@ -10,7 +10,8 @@ defmodule Brittle.ExUnit do
        duration: 0,
        hostname: SystemData.hostname(),
        branch: SystemData.branch(),
-       revision: SystemData.revision()
+       revision: SystemData.revision(),
+       dirty: SystemData.dirty?()
      }}
   end
 

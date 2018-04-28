@@ -4,22 +4,26 @@ defmodule Brittle.ExUnitTest do
   setup do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
 
-    [pid: pid, state: %{test_count: 3, failure_count: 1, excluded_count: 1, duration: 69251}]
+    [pid: pid]
   end
 
-  test "counts tests, excludes and failures, records durations", %{pid: pid, state: state} do
+  test "counts tests, excludes and failures, records durations", %{pid: pid} do
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:failed, []}}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:excluded, ""}}})
     GenServer.cast(pid, {:suite_finished, 69251, 0})
 
-    assert :sys.get_state(pid) == state
+    state = :sys.get_state(pid)
+    assert state.test_count == 3
+    assert state.failure_count == 1
+    assert state.excluded_count == 1
+    assert state.duration == 69251
   end
 
-  test "handles unmatching clauses", %{pid: pid, state: state} do
-    :sys.replace_state(pid, fn _ -> state end)
+  test "handles unmatching clauses", %{pid: pid} do
+    :sys.replace_state(pid, fn _ -> %{} end)
     GenServer.cast(pid, :no_clause_matching)
 
-    assert :sys.get_state(pid) == state
+    assert :sys.get_state(pid) == %{}
   end
 end

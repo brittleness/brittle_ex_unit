@@ -31,4 +31,18 @@ defmodule Brittle.ExUnitTest do
 
     assert :sys.get_state(pid) == %{}
   end
+
+  test "stores the payload in the payloads directory", %{pid: pid} do
+    GenServer.cast(pid, {:suite_finished, 92516, 0})
+    :sys.get_state(pid)
+
+    payload =
+      :brittle_ex_unit
+      |> Application.get_env(:payload_directory)
+      |> Path.join("1525466659652251.json")
+      |> File.read!()
+      |> Jason.decode!(keys: :atoms!)
+
+    assert payload.duration == 92516
+  end
 end

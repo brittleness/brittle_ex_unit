@@ -1,5 +1,6 @@
 defmodule Brittle.ExUnit do
   alias Brittle.SystemData
+  @naive_date_time Application.get_env(:brittle_ex_unit, :naive_date_time, NaiveDateTime)
 
   def init(_) do
     {:ok,
@@ -33,10 +34,33 @@ defmodule Brittle.ExUnit do
   end
 
   def handle_cast({:suite_finished, duration, _}, state) do
-    {:noreply, %{state | duration: duration}}
+    state = %{state | duration: duration}
+
+    File.mkdir_p!(payload_directory())
+    File.write!(filename(), Jason.encode!(state))
+
+    {:noreply, state}
   end
 
   def handle_cast(_, state) do
     {:noreply, state}
+  end
+
+  defp payload_directory do
+    Application.get_env(
+      :brittle_ex_unit,
+      :payload_directory,
+      Path.join(System.user_home!(), "brittle/payloads")
+    )
+  end
+
+  defp filename do
+    basename =
+      @naive_date_time.utc_now()
+      |> DateTime.from_naive!("Etc/UTC")
+      |> DateTime.to_unix(:microsecond)
+      |> Integer.to_string()
+
+    Path.join(payload_directory(), basename <> ".json")
   end
 end

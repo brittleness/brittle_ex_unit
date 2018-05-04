@@ -9,7 +9,7 @@ defmodule Brittle.ExUnit do
        failure_count: 0,
        excluded_count: 0,
        duration: 0,
-       suite: Atom.to_string(Mix.Project.config()[:app]),
+       suite: %{name: Atom.to_string(Mix.Project.config()[:app])},
        hostname: SystemData.hostname(),
        branch: SystemData.branch(),
        revision: SystemData.revision(),

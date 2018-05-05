@@ -13,8 +13,15 @@ defmodule Brittle.ExUnit do
        hostname: SystemData.hostname(),
        branch: SystemData.branch(),
        revision: SystemData.revision(),
-       dirty: SystemData.dirty?()
+       dirty: SystemData.dirty?(),
+       started_at: nil
      }}
+  end
+
+  def handle_cast({:suite_started, _}, state) do
+    state = %{state | started_at: @date_time.utc_now()}
+
+    {:noreply, state}
   end
 
   def handle_cast({:test_finished, %ExUnit.Test{state: {:failed, _}}}, state) do

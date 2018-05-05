@@ -8,6 +8,7 @@ defmodule Brittle.ExUnitTest do
   end
 
   test "counts tests, excludes and failures, records durations", %{pid: pid} do
+    GenServer.cast(pid, {:suite_started, []})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:failed, []}}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:excluded, ""}}})
@@ -23,6 +24,7 @@ defmodule Brittle.ExUnitTest do
     assert state.failure_count == 1
     assert state.excluded_count == 1
     assert state.duration == 69251
+    assert state.started_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
   end
 
   test "handles unmatching clauses", %{pid: pid} do

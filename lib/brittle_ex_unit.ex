@@ -14,7 +14,8 @@ defmodule Brittle.ExUnit do
        branch: SystemData.branch(),
        revision: SystemData.revision(),
        dirty: SystemData.dirty?(),
-       started_at: nil
+       started_at: nil,
+       finished_at: nil
      }}
   end
 
@@ -41,7 +42,7 @@ defmodule Brittle.ExUnit do
   end
 
   def handle_cast({:suite_finished, duration, _}, state) do
-    state = %{state | duration: duration}
+    state = %{state | duration: duration, finished_at: @date_time.utc_now()}
 
     File.mkdir_p!(payload_directory())
     File.write!(filename(), Jason.encode!(state))

@@ -3,12 +3,15 @@ defmodule Brittle.ExUnitTest do
 
   setup do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
+    {:ok, date_time} = DateTimeMock.start_link()
 
-    [pid: pid]
+    [pid: pid, date_time: date_time]
   end
 
-  test "counts tests, excludes and failures, records durations", %{pid: pid} do
+  test "counts tests, excludes and failures, records durations", %{pid: pid, date_time: date_time} do
     GenServer.cast(pid, {:suite_started, []})
+    :sys.get_state(pid)
+    DateTimeMock.pass_time(date_time, 69251)
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:failed, []}}})
     GenServer.cast(pid, {:test_finished, %ExUnit.Test{state: {:excluded, ""}}})
@@ -25,6 +28,7 @@ defmodule Brittle.ExUnitTest do
     assert state.excluded_count == 1
     assert state.duration == 69251
     assert state.started_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
+    assert state.finished_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
   end
 
   test "handles unmatching clauses", %{pid: pid} do

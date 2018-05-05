@@ -1,6 +1,6 @@
 defmodule Brittle.ExUnit do
   alias Brittle.SystemData
-  @naive_date_time Application.get_env(:brittle_ex_unit, :naive_date_time, NaiveDateTime)
+  @date_time Application.get_env(:brittle_ex_unit, :date_time, DateTime)
 
   def init(_) do
     {:ok,
@@ -56,8 +56,7 @@ defmodule Brittle.ExUnit do
 
   defp filename do
     basename =
-      @naive_date_time.utc_now()
-      |> DateTime.from_naive!("Etc/UTC")
+      @date_time.utc_now()
       |> DateTime.to_unix(:microsecond)
       |> Integer.to_string()
 

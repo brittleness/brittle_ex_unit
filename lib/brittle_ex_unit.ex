@@ -52,8 +52,8 @@ defmodule Brittle.ExUnit do
     {:noreply, state}
   end
 
-  defp add_result(results, %ExUnit.Test{name: name, module: module} = test) do
-    results ++ [%{status: status(test), test: %{name: name, module: module}}]
+  defp add_result(results, %ExUnit.Test{name: name, module: module, time: duration} = test) do
+    results ++ [%{status: status(test), duration: duration, test: %{name: name, module: module}}]
   end
 
   defp status(%ExUnit.Test{state: {status, _}}), do: status

@@ -15,19 +15,34 @@ defmodule Brittle.ExUnitTest do
 
     GenServer.cast(
       pid,
-      {:test_finished, %ExUnit.Test{module: ExampleTest, name: :"test passes"}}
+      {:test_finished,
+       %ExUnit.Test{
+         module: ExampleTest,
+         name: :"test passes",
+         time: 23132
+       }}
     )
 
     GenServer.cast(
       pid,
       {:test_finished,
-       %ExUnit.Test{module: ExampleTest, name: :"test fails", state: {:failed, []}}}
+       %ExUnit.Test{
+         module: ExampleTest,
+         name: :"test fails",
+         time: 24123,
+         state: {:failed, []}
+       }}
     )
 
     GenServer.cast(
       pid,
       {:test_finished,
-       %ExUnit.Test{module: ExampleTest, name: :"test is excluded", state: {:excluded, ""}}}
+       %ExUnit.Test{
+         module: ExampleTest,
+         name: :"test is excluded",
+         time: 21996,
+         state: {:excluded, ""}
+       }}
     )
 
     GenServer.cast(pid, {:suite_finished, 69251, 0})
@@ -46,9 +61,21 @@ defmodule Brittle.ExUnitTest do
     assert state.finished_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
 
     assert state.results == [
-             %{status: :passed, test: %{module: ExampleTest, name: :"test passes"}},
-             %{status: :failed, test: %{module: ExampleTest, name: :"test fails"}},
-             %{status: :excluded, test: %{module: ExampleTest, name: :"test is excluded"}}
+             %{
+               status: :passed,
+               duration: 23132,
+               test: %{module: ExampleTest, name: :"test passes"}
+             },
+             %{
+               status: :failed,
+               duration: 24123,
+               test: %{module: ExampleTest, name: :"test fails"}
+             },
+             %{
+               status: :excluded,
+               duration: 21996,
+               test: %{module: ExampleTest, name: :"test is excluded"}
+             }
            ]
   end
 

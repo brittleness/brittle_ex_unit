@@ -44,11 +44,12 @@ defmodule Brittle.ExUnitTest do
     assert state.duration == 69251
     assert state.started_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
     assert state.finished_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
+
     assert state.results == [
-      %{test: %{module: ExampleTest, name: :"test passes"}},
-      %{test: %{module: ExampleTest, name: :"test fails"}},
-      %{test: %{module: ExampleTest, name: :"test is excluded"}}
-    ]
+             %{status: :passed, test: %{module: ExampleTest, name: :"test passes"}},
+             %{status: :failed, test: %{module: ExampleTest, name: :"test fails"}},
+             %{status: :excluded, test: %{module: ExampleTest, name: :"test is excluded"}}
+           ]
   end
 
   test "handles unmatching clauses", %{pid: pid} do

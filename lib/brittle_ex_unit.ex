@@ -26,29 +26,14 @@ defmodule Brittle.ExUnit do
     {:noreply, state}
   end
 
-  def handle_cast({:test_finished, %ExUnit.Test{state: {:failed, _}} = test}, state) do
-    state = %{
-      state
-      | test_count: state.test_count + 1,
-        failure_count: state.failure_count + 1,
-        results: add_result(state.results, test)
-    }
+  def handle_cast({:test_finished, test}, state) do
+    state =
+      case status(test) do
+        :passed -> state
+        :excluded -> %{state | excluded_count: state.excluded_count + 1}
+        :failed -> %{state | failure_count: state.failure_count + 1}
+      end
 
-    {:noreply, state}
-  end
-
-  def handle_cast({:test_finished, %ExUnit.Test{state: {:excluded, _}} = test}, state) do
-    state = %{
-      state
-      | test_count: state.test_count + 1,
-        excluded_count: state.excluded_count + 1,
-        results: add_result(state.results, test)
-    }
-
-    {:noreply, state}
-  end
-
-  def handle_cast({:test_finished, %ExUnit.Test{state: nil} = test}, state) do
     state = %{state | test_count: state.test_count + 1, results: add_result(state.results, test)}
 
     {:noreply, state}
@@ -70,6 +55,9 @@ defmodule Brittle.ExUnit do
   defp add_result(results, %ExUnit.Test{name: name, module: module}) do
     results ++ [%{test: %{name: name, module: module}}]
   end
+
+  defp status(%ExUnit.Test{state: {status, _}}), do: status
+  defp status(%ExUnit.Test{state: nil}), do: :passed
 
   defp payload_directory do
     Application.get_env(

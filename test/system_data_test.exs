@@ -4,6 +4,12 @@ defmodule Brittle.SystemDataTest do
 
   setup do
     {:ok, system_mock} = SystemMock.start_link
+
+    ExUnit.Callbacks.on_exit(fn() ->
+      ref = Process.monitor(system_mock)
+      assert_receive {:DOWN, ^ref, _, _, _}, 500
+    end)
+
     [system_mock: system_mock]
   end
 

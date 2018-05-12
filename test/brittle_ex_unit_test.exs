@@ -5,6 +5,11 @@ defmodule Brittle.ExUnitTest do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
     {:ok, date_time} = DateTimeMock.start_link()
 
+    ExUnit.Callbacks.on_exit(fn() ->
+      ref = Process.monitor(date_time)
+      assert_receive {:DOWN, ^ref, _, _, _}, 500
+    end)
+
     [pid: pid, date_time: date_time]
   end
 

@@ -1,6 +1,7 @@
 defmodule Brittle.ExUnit do
   alias Brittle.SystemData
   @date_time Application.get_env(:brittle_ex_unit, :date_time, DateTime)
+  @json_encoder Application.get_env(:brittle_ex_unit, :json_encoder, Jason)
 
   def init(_) do
     {:ok,
@@ -43,7 +44,7 @@ defmodule Brittle.ExUnit do
     state = %{state | duration: duration, finished_at: @date_time.utc_now()}
 
     File.mkdir_p!(payload_directory())
-    File.write!(filename(), Jason.encode!(state))
+    File.write!(filename(), @json_encoder.encode!(state))
 
     {:noreply, state}
   end

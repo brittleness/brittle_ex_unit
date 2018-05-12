@@ -3,8 +3,18 @@ defmodule SystemMock do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
 
+  def with(mock, command, result, fun) do
+    put(mock, command, result)
+    fun.()
+    delete(mock, command)
+  end
+
   def put(mock, command, result) do
     Agent.update(mock, &Map.put(&1, command, result))
+  end
+
+  def delete(mock, command) do
+    Agent.update(mock, &Map.delete(&1, command))
   end
 
   def cmd("hostname" = cmd, [] = args) do

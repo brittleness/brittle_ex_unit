@@ -19,19 +19,13 @@ defmodule Brittle.SystemDataTest do
     assert SystemData.revision == "7f8136915fe249efa47a21a89ff0f04e880264fc"
   end
 
-  describe "with a clean working directory" do
-    setup %{system_mock: system_mock} do
-      SystemMock.put(system_mock, {"git", ~w(status --porcelain)}, "")
-    end
-
-    test "dirty?/0 returns false" do
+  test "dirty?/0 returns false with a clean working directory", %{system_mock: system_mock} do
+    SystemMock.with(system_mock, {"git", ~w(status --porcelain)}, "", fn() ->
       assert SystemData.dirty? == false
-    end
+    end)
   end
 
-  describe "with a dirty working directory" do
-    test "dirty?/0 returns true" do
-      assert SystemData.dirty? == true
-    end
+  test "dirty?/0 returns true with a dirty working directory" do
+    assert SystemData.dirty? == true
   end
 end

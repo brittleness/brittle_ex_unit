@@ -21,7 +21,7 @@ defmodule Brittle.SystemDataTest do
 
   describe "with a clean working directory" do
     setup %{system_mock: system_mock} do
-      SystemMock.set(system_mock, {"git", ~w(status --porcelain)}, "")
+      SystemMock.put(system_mock, {"git", ~w(status --porcelain)}, "")
     end
 
     test "dirty?/0 returns false" do

@@ -1,4 +1,6 @@
 defmodule SystemMock do
+  require Logger
+
   def start_link do
     Agent.start_link(fn -> %{} end, name: __MODULE__)
   end
@@ -47,8 +49,16 @@ defmodule SystemMock do
 
   defp execute_command_and_replace_result({cmd, args} = command, replacement) do
     case System.cmd(cmd, args) do
-      {_, 0} -> {get(command) || replacement, 0}
-      result -> result
+      {_, 0} ->
+        {get(command) || replacement, 0}
+
+      result ->
+        Logger.warn(
+          "SystemMock called `System.cmd(#{inspect(cmd)}, #{inspect(args)})` " <>
+            "and expected `{_, 0}`, but received `#{inspect(result)}`."
+        )
+
+        result
     end
   end
 

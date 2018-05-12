@@ -64,7 +64,7 @@ defmodule Brittle.ExUnit do
     Application.get_env(
       :brittle_ex_unit,
       :payload_directory,
-      Path.join(System.user_home!(), "brittle/payloads")
+      Path.join(System.user_home!(), ".brittle/payloads")
     )
   end
 

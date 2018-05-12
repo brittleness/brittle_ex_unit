@@ -53,6 +53,8 @@ defmodule Brittle.ExUnit do
     {:noreply, state}
   end
 
+  def terminate(_, _), do: :ok
+
   defp add_result(results, %ExUnit.Test{name: name, module: module, time: duration} = test) do
     results ++ [%{status: status(test), duration: duration, test: %{name: name, module: module}}]
   end

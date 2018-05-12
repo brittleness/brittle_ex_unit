@@ -5,7 +5,7 @@ defmodule Brittle.ExUnitTest do
     {:ok, pid} = GenServer.start_link(Brittle.ExUnit, [])
     {:ok, date_time} = DateTimeMock.start_link()
 
-    ExUnit.Callbacks.on_exit(fn() ->
+    ExUnit.Callbacks.on_exit(fn ->
       ref = Process.monitor(date_time)
       assert_receive {:DOWN, ^ref, _, _, _}, 500
     end)
@@ -18,36 +18,35 @@ defmodule Brittle.ExUnitTest do
     :sys.get_state(pid)
     DateTimeMock.pass_time(date_time, 69251)
 
+    module = %{
+      module_or_case() => ExampleTest
+    }
+
     GenServer.cast(
       pid,
       {:test_finished,
-       %ExUnit.Test{
-         module: ExampleTest,
-         name: :"test passes",
-         time: 23132
-       }}
+       Map.merge(
+         %ExUnit.Test{name: :"test passes", time: 23132},
+         module
+       )}
     )
 
     GenServer.cast(
       pid,
       {:test_finished,
-       %ExUnit.Test{
-         module: ExampleTest,
-         name: :"test fails",
-         time: 24123,
-         state: {:failed, []}
-       }}
+       Map.merge(
+         %ExUnit.Test{name: :"test fails", time: 24123, state: {:failed, []}},
+         module
+       )}
     )
 
     GenServer.cast(
       pid,
       {:test_finished,
-       %ExUnit.Test{
-         module: ExampleTest,
-         name: :"test is excluded",
-         time: 21996,
-         state: {:excluded, ""}
-       }}
+       Map.merge(
+         %ExUnit.Test{name: :"test is excluded", time: 21996, state: {:excluded, ""}},
+         module
+       )}
     )
 
     GenServer.cast(pid, {:suite_finished, 69251, 0})
@@ -103,5 +102,12 @@ defmodule Brittle.ExUnitTest do
       |> Jason.decode!(keys: :atoms!)
 
     assert payload.duration == 92516
+  end
+
+  defp module_or_case do
+    case Map.has_key?(%ExUnit.Test{}, :module) do
+      true -> :module
+      false -> :case
+    end
   end
 end

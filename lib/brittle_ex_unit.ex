@@ -1,5 +1,5 @@
 defmodule Brittle.ExUnit do
-  alias Brittle.SystemData
+  alias Brittle.{SystemData, ExUnitData}
   @date_time Application.get_env(:brittle_ex_unit, :date_time, DateTime)
   @json_encoder Application.get_env(:brittle_ex_unit, :json_encoder, Jason)
 
@@ -55,8 +55,15 @@ defmodule Brittle.ExUnit do
 
   def terminate(_, _), do: :ok
 
-  defp add_result(results, %ExUnit.Test{name: name, module: module, time: duration} = test) do
-    results ++ [%{status: status(test), duration: duration, test: %{name: name, module: module}}]
+  defp add_result(results, %ExUnit.Test{name: name, time: duration} = test) do
+    results ++
+      [
+        %{
+          status: status(test),
+          duration: duration,
+          test: %{name: name, module: ExUnitData.module(test)}
+        }
+      ]
   end
 
   defp status(%ExUnit.Test{state: {status, _}}), do: status

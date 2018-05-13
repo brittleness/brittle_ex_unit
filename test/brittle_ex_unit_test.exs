@@ -30,7 +30,7 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test passes", time: 23132, tags: %{file: file}},
+         %ExUnit.Test{name: :"test passes", time: 23132, tags: %{file: file, line: 12}},
          module
        )}
     )
@@ -42,7 +42,7 @@ defmodule Brittle.ExUnitTest do
          %ExUnit.Test{
            name: :"test fails",
            time: 24123,
-           tags: %{file: file},
+           tags: %{file: file, line: 23},
            state: {:failed, []}
          },
          module
@@ -56,7 +56,7 @@ defmodule Brittle.ExUnitTest do
          %ExUnit.Test{
            name: :"test is excluded",
            time: 21996,
-           tags: %{file: file},
+           tags: %{file: file, line: 34},
            state: {:excluded, ""}
          },
          module
@@ -85,7 +85,8 @@ defmodule Brittle.ExUnitTest do
                test: %{
                  module: ExampleTest,
                  name: :"test passes",
-                 file: "test/brittle_ex_unit_test.exs"
+                 file: "test/brittle_ex_unit_test.exs",
+                 line: 12
                }
              },
              %{
@@ -94,7 +95,8 @@ defmodule Brittle.ExUnitTest do
                test: %{
                  module: ExampleTest,
                  name: :"test fails",
-                 file: "test/brittle_ex_unit_test.exs"
+                 file: "test/brittle_ex_unit_test.exs",
+                 line: 23
                }
              },
              %{
@@ -103,7 +105,8 @@ defmodule Brittle.ExUnitTest do
                test: %{
                  module: ExampleTest,
                  name: :"test is excluded",
-                 file: "test/brittle_ex_unit_test.exs"
+                 file: "test/brittle_ex_unit_test.exs",
+                 line: 34
                }
              }
            ]

@@ -64,7 +64,8 @@ defmodule Brittle.ExUnit do
           test: %{
             name: name,
             module: ExUnitData.module(test),
-            file: ExUnitData.file(test)
+            file: ExUnitData.file(test),
+            line: test.tags.line
           }
         }
       ]

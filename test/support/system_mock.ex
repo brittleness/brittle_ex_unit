@@ -41,10 +41,7 @@ defmodule SystemMock do
   end
 
   def cmd("git" = cmd, ~w(status --porcelain) = args) do
-    execute_command_and_replace_result(
-      {cmd, args},
-      " M lib/system_data.ex\n"
-    )
+    execute_command_and_replace_result({cmd, args}, "")
   end
 
   defp execute_command_and_replace_result({cmd, args} = command, replacement) do

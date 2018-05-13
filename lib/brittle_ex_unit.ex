@@ -61,7 +61,11 @@ defmodule Brittle.ExUnit do
         %{
           status: status(test),
           duration: duration,
-          test: %{name: name, module: ExUnitData.module(test)}
+          test: %{
+            name: name,
+            module: ExUnitData.module(test),
+            file: ExUnitData.file(test)
+          }
         }
       ]
   end

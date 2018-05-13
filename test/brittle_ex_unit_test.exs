@@ -13,7 +13,11 @@ defmodule Brittle.ExUnitTest do
     [pid: pid, date_time: date_time]
   end
 
-  test "counts tests, excludes and failures, records durations", %{pid: pid, date_time: date_time} do
+  test "counts tests, excludes and failures, records durations", %{
+    pid: pid,
+    date_time: date_time,
+    file: file
+  } do
     GenServer.cast(pid, {:suite_started, []})
     :sys.get_state(pid)
     DateTimeMock.pass_time(date_time, 69251)
@@ -26,7 +30,7 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test passes", time: 23132},
+         %ExUnit.Test{name: :"test passes", time: 23132, tags: %{file: file}},
          module
        )}
     )
@@ -35,7 +39,12 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test fails", time: 24123, state: {:failed, []}},
+         %ExUnit.Test{
+           name: :"test fails",
+           time: 24123,
+           tags: %{file: file},
+           state: {:failed, []}
+         },
          module
        )}
     )
@@ -44,7 +53,12 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test is excluded", time: 21996, state: {:excluded, ""}},
+         %ExUnit.Test{
+           name: :"test is excluded",
+           time: 21996,
+           tags: %{file: file},
+           state: {:excluded, ""}
+         },
          module
        )}
     )
@@ -68,17 +82,29 @@ defmodule Brittle.ExUnitTest do
              %{
                status: :passed,
                duration: 23132,
-               test: %{module: ExampleTest, name: :"test passes"}
+               test: %{
+                 module: ExampleTest,
+                 name: :"test passes",
+                 file: "test/brittle_ex_unit_test.exs"
+               }
              },
              %{
                status: :failed,
                duration: 24123,
-               test: %{module: ExampleTest, name: :"test fails"}
+               test: %{
+                 module: ExampleTest,
+                 name: :"test fails",
+                 file: "test/brittle_ex_unit_test.exs"
+               }
              },
              %{
                status: :excluded,
                duration: 21996,
-               test: %{module: ExampleTest, name: :"test is excluded"}
+               test: %{
+                 module: ExampleTest,
+                 name: :"test is excluded",
+                 file: "test/brittle_ex_unit_test.exs"
+               }
              }
            ]
   end

@@ -8,7 +8,8 @@ defmodule Brittle.ExUnit.MixProject do
       elixir: "~> 1.4",
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_apps: [:mix, :jason]]
     ]
   end
 
@@ -26,7 +27,8 @@ defmodule Brittle.ExUnit.MixProject do
   defp deps do
     [
       {:jason, "~> 1.0", optional: true},
-      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false}
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 end

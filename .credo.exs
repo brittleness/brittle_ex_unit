@@ -64,7 +64,7 @@
         # You can customize the priority of any check
         # Priority values are: `low, normal, high, higher`
         #
-        {Credo.Check.Design.AliasUsage, priority: :low},
+        {Credo.Check.Design.AliasUsage, excluded_namespaces: ~w(Mix ExUnit)},
         # For some checks, you can also set other parameters
         #
         # If you don't want the `setup` and `test` macro calls in ExUnit tests
@@ -113,7 +113,8 @@
         {Credo.Check.Refactor.NegatedConditionsWithElse},
         {Credo.Check.Refactor.Nesting},
         {Credo.Check.Refactor.PipeChainStart,
-         excluded_argument_types: [:atom, :binary, :fn, :keyword], excluded_functions: []},
+         excluded_argument_types: [:atom, :binary, :fn, :keyword],
+         excluded_functions: []},
         {Credo.Check.Refactor.UnlessWithElse},
 
         #

@@ -30,7 +30,11 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test passes", time: 23_132, tags: %{file: file, line: 12}},
+         %ExUnit.Test{
+           name: :"test passes",
+           time: 23_132,
+           tags: %{file: file, line: 12}
+         },
          module
        )}
     )
@@ -75,8 +79,12 @@ defmodule Brittle.ExUnitTest do
     assert state.failure_count == 1
     assert state.excluded_count == 1
     assert state.duration == 69_251
-    assert state.started_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
-    assert state.finished_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
+
+    assert state.started_at ==
+             DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
+
+    assert state.finished_at ==
+             DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
 
     assert state.results == [
              %{

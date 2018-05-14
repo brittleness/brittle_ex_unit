@@ -11,6 +11,7 @@ defmodule Brittle.ExUnitDataTest do
   end
 
   test "file/1 returns the test's relative file name", %{file: file} do
-    assert ExUnitData.file(%{tags: %{file: file}}) == "test/ex_unit_data_test.exs"
+    assert ExUnitData.file(%{tags: %{file: file}}) ==
+             "test/ex_unit_data_test.exs"
   end
 end

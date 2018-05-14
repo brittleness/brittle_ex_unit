@@ -40,7 +40,11 @@ defmodule Brittle.ExUnit do
         :failed -> %{state | failure_count: state.failure_count + 1}
       end
 
-    state = %{state | test_count: state.test_count + 1, results: add_result(state.results, test)}
+    state = %{
+      state
+      | test_count: state.test_count + 1,
+        results: add_result(state.results, test)
+    }
 
     {:noreply, state}
   end

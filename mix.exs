@@ -25,7 +25,8 @@ defmodule Brittle.ExUnit.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:jason, "~> 1.0", optional: true}
+      {:jason, "~> 1.0", optional: true},
+      {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false}
     ]
   end
 end

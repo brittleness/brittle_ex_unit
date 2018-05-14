@@ -21,7 +21,7 @@ defmodule DateTimeMock do
     end)
   end
 
-  def utc_now() do
+  def utc_now do
     __MODULE__
     |> Agent.get(&Map.get(&1, :utc_now))
     |> DateTime.from_naive!("Etc/UTC")

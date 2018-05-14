@@ -20,7 +20,7 @@ defmodule Brittle.ExUnitTest do
   } do
     GenServer.cast(pid, {:suite_started, []})
     :sys.get_state(pid)
-    DateTimeMock.pass_time(date_time, 69251)
+    DateTimeMock.pass_time(date_time, 69_251)
 
     module = %{
       module_or_case() => ExampleTest
@@ -30,7 +30,7 @@ defmodule Brittle.ExUnitTest do
       pid,
       {:test_finished,
        Map.merge(
-         %ExUnit.Test{name: :"test passes", time: 23132, tags: %{file: file, line: 12}},
+         %ExUnit.Test{name: :"test passes", time: 23_132, tags: %{file: file, line: 12}},
          module
        )}
     )
@@ -41,7 +41,7 @@ defmodule Brittle.ExUnitTest do
        Map.merge(
          %ExUnit.Test{
            name: :"test fails",
-           time: 24123,
+           time: 24_123,
            tags: %{file: file, line: 23},
            state: {:failed, []}
          },
@@ -55,7 +55,7 @@ defmodule Brittle.ExUnitTest do
        Map.merge(
          %ExUnit.Test{
            name: :"test is excluded",
-           time: 21996,
+           time: 21_996,
            tags: %{file: file, line: 34},
            state: {:excluded, ""}
          },
@@ -63,7 +63,7 @@ defmodule Brittle.ExUnitTest do
        )}
     )
 
-    GenServer.cast(pid, {:suite_finished, 69251, 0})
+    GenServer.cast(pid, {:suite_finished, 69_251, 0})
 
     state = :sys.get_state(pid)
     assert state.suite == %{name: "brittle_ex_unit"}
@@ -74,14 +74,14 @@ defmodule Brittle.ExUnitTest do
     assert state.test_count == 3
     assert state.failure_count == 1
     assert state.excluded_count == 1
-    assert state.duration == 69251
+    assert state.duration == 69_251
     assert state.started_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.652251], "Etc/UTC")
     assert state.finished_at == DateTime.from_naive!(~N[2018-05-04 20:44:19.721502], "Etc/UTC")
 
     assert state.results == [
              %{
                status: :passed,
-               duration: 23132,
+               duration: 23_132,
                test: %{
                  module: ExampleTest,
                  name: :"test passes",
@@ -91,7 +91,7 @@ defmodule Brittle.ExUnitTest do
              },
              %{
                status: :failed,
-               duration: 24123,
+               duration: 24_123,
                test: %{
                  module: ExampleTest,
                  name: :"test fails",
@@ -101,7 +101,7 @@ defmodule Brittle.ExUnitTest do
              },
              %{
                status: :excluded,
-               duration: 21996,
+               duration: 21_996,
                test: %{
                  module: ExampleTest,
                  name: :"test is excluded",
@@ -120,7 +120,7 @@ defmodule Brittle.ExUnitTest do
   end
 
   test "stores the payload in the payloads directory", %{pid: pid} do
-    GenServer.cast(pid, {:suite_finished, 92516, 0})
+    GenServer.cast(pid, {:suite_finished, 92_516, 0})
     :sys.get_state(pid)
 
     payload =
@@ -130,7 +130,7 @@ defmodule Brittle.ExUnitTest do
       |> File.read!()
       |> Jason.decode!(keys: :atoms!)
 
-    assert payload.duration == 92516
+    assert payload.duration == 92_516
   end
 
   defp module_or_case do

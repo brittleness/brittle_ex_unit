@@ -1,4 +1,9 @@
 defmodule Brittle.ExUnit do
+  @moduledoc """
+  An ExUnit reporter that records test run statistics and writes the data to a
+  payload file as JSON.
+  """
+
   alias Brittle.{SystemData, ExUnitData}
   @date_time Application.get_env(:brittle_ex_unit, :date_time, DateTime)
   @json_encoder Application.get_env(:brittle_ex_unit, :json_encoder, Jason)

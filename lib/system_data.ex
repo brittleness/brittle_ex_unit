@@ -1,4 +1,8 @@
 defmodule Brittle.SystemData do
+  @moduledoc """
+  Wraps commands to Elixir's `System` module to retreive system data.
+  """
+
   @system Application.get_env(:brittle_ex_unit, :system, System)
 
   def hostname do

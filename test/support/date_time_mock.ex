@@ -1,4 +1,9 @@
 defmodule DateTimeMock do
+  @moduledoc """
+  A mock for Elixir's `DateTime`. Has a static time that can be changed if
+  needed.
+  """
+
   @default ~N[2018-05-04 20:44:19.652251]
 
   def start_link do

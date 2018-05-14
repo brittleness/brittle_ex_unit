@@ -1,4 +1,9 @@
 defmodule SystemMock do
+  @moduledoc """
+  A mock for Elixir's `System` module. Calls the actual function, then replaces
+  the resulting output with a predefined value.
+  """
+
   require Logger
 
   def start_link do

@@ -10,3 +10,4 @@ otp_release:
 script:
   - mix test
   - mix credo --strict
+  - mix coveralls.travis

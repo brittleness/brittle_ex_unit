@@ -9,6 +9,7 @@ defmodule Brittle.ExUnit.MixProject do
       start_permanent: Mix.env() == :prod,
       elixirc_paths: elixirc_paths(Mix.env()),
       deps: deps(),
+      test_coverage: [tool: ExCoveralls],
       dialyzer: [plt_add_apps: [:mix, :jason]]
     ]
   end
@@ -28,7 +29,8 @@ defmodule Brittle.ExUnit.MixProject do
     [
       {:jason, "~> 1.0", optional: true},
       {:credo, "~> 0.9.1", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 end

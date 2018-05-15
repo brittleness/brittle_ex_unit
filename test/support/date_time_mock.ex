@@ -22,8 +22,15 @@ defmodule DateTimeMock do
   end
 
   def utc_now do
-    __MODULE__
-    |> Agent.get(&Map.get(&1, :utc_now))
-    |> DateTime.from_naive!("Etc/UTC")
+    naive =
+      case Process.whereis(__MODULE__) do
+        nil ->
+          @default
+
+        _ ->
+          Agent.get(__MODULE__, &Map.get(&1, :utc_now))
+      end
+
+    DateTime.from_naive!(naive, "Etc/UTC")
   end
 end

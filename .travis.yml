@@ -13,3 +13,4 @@ script:
   - mix test
   - mix credo --strict
   - mix coveralls.travis
+  - if [[ `elixir -v` = *"1.6"* ]]; then mix format --check-formatted --dry-run; fi
